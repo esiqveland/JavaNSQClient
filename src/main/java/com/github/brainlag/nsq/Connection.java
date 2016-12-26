@@ -40,11 +40,12 @@ public class Connection {
     private final EventLoopGroup eventLoopGroup;
     private final NSQConfig config;
 
-    public static final long HEARTBEAT_MAX_INTERVAL = 1L*60L*1000L;//default one minute
+    public final long HEARTBEAT_MAX_INTERVAL;
     private volatile AtomicReference<Long> lastHeartbeatSuccess = new AtomicReference<Long>(System.currentTimeMillis());
 
 
     public Connection(final ServerAddress serverAddress, final NSQConfig config) throws NoConnectionsException {
+        this.HEARTBEAT_MAX_INTERVAL = config.getHeartbeatInterval() * 2;
         this.address = serverAddress;
         this.config = config;
         final Bootstrap bootstrap = new Bootstrap();
@@ -97,8 +98,8 @@ public class Connection {
         return requests.size() > 0;
     }
 
-    public boolean isHeartbeatStatusOK(){
-        if(System.currentTimeMillis() - lastHeartbeatSuccess.get() > HEARTBEAT_MAX_INTERVAL){
+    public boolean isHeartbeatStatusOK() {
+        if (System.currentTimeMillis() - lastHeartbeatSuccess.get() > HEARTBEAT_MAX_INTERVAL) {
             return false;
         }
         return true;

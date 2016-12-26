@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 
 public class NSQConfig {
 
@@ -16,7 +17,7 @@ public class NSQConfig {
     private String clientId;
     private String hostname;
     private boolean featureNegotiation = true;
-    private Integer heartbeatInterval = null;
+    private int heartbeatInterval = (int) TimeUnit.SECONDS.toMillis(60);
     private Integer outputBufferSize = null;
     private Integer outputBufferTimeout = null;
     private boolean tlsV1 = false;
@@ -50,11 +51,11 @@ public class NSQConfig {
         this.featureNegotiation = featureNegotiation;
     }
 
-    public Integer getHeartbeatInterval() {
+    public int getHeartbeatInterval() {
         return heartbeatInterval;
     }
 
-    public void setHeartbeatInterval(final Integer heartbeatInterval) {
+    public void setHeartbeatInterval(final int heartbeatInterval) {
         this.heartbeatInterval = heartbeatInterval;
     }
 
@@ -143,8 +144,8 @@ public class NSQConfig {
         buffer.append("{\"client_id\":\"" + clientId + "\", ");
         buffer.append("\"hostname\":\"" + hostname + "\", ");
         buffer.append("\"feature_negotiation\": true, ");
-        if (getHeartbeatInterval() != null) {
-            buffer.append("\"heartbeat_interval\":" + getHeartbeatInterval().toString() + ", ");
+        if (getHeartbeatInterval() != -1) {
+            buffer.append("\"heartbeat_interval\":" + getHeartbeatInterval() + ", ");
         }
         if (getOutputBufferSize() != null) {
             buffer.append("\"output_buffer_size\":" + getOutputBufferSize().toString() + ", ");

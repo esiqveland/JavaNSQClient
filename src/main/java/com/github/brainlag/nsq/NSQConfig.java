@@ -18,6 +18,7 @@ public class NSQConfig {
     private String hostname;
     private boolean featureNegotiation = true;
     private int heartbeatInterval = (int) TimeUnit.SECONDS.toMillis(60);
+    private int connectTimeout = (int) TimeUnit.SECONDS.toMillis(2);
     private Integer outputBufferSize = null;
     private Integer outputBufferTimeout = null;
     private boolean tlsV1 = false;
@@ -49,6 +50,10 @@ public class NSQConfig {
 
     public void setFeatureNegotiation(final boolean featureNegotiation) {
         this.featureNegotiation = featureNegotiation;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
     }
 
     public int getHeartbeatInterval() {
